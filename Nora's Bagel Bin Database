@@ -1,0 +1,78 @@
+CREATE TABLE coffee_shop(
+shop_id       INTEGER,
+shop_name     VARCHAR(50),
+city          VARCHAR(50),
+state         CHAR(2),
+PRIMARY KEY (shop_id)
+);
+
+CREATE TABLE employee(
+employee_id    INTEGER,
+first_name     VARCHAR(30),
+last_name      VARCHAR(30),
+hire_date      DATE,
+job_title      VARCHAR(30),
+shop_id        INTEGER,
+PRIMARY KEY (employee_id),
+FOREIGN KEY (shop_id) REFERENCES coffee_shop (shop_id) 
+);
+
+CREATE TABLE supplier(
+supplier_id      INTEGER,
+company_name     VARCHAR(50),
+country          VARCHAR(30),
+sales_contact_name VARCHAR(60),
+email            VARCHAR(50) NOT NULL,
+PRIMARY KEY (supplier_id)
+);
+
+CREATE TABLE coffee(
+coffee_id        INTEGER,
+shop_id          INTEGER,
+supplier_id      INTEGER,
+coffee_name      VARCHAR(30),
+price_per_pound  NUMERIC(5,2),
+PRIMARY KEY (coffee_id),
+FOREIGN KEY (shop_id) REFERENCES coffee_shop (shop_id),
+FOREIGN KEY (supplier_id) REFERENCES supplier (supplier_id)
+);
+
+INSERT INTO coffee_shop (shop_id, shop_name, city, state)
+VALUES (1, 'best coffee', 'seattle', 'wa'),
+       (2, 'viva coffee', 'tacoma', 'wa'),
+       (3, 'balance coffee', 'bellevue', 'wa'),
+       (4, 'venture coffee', 'olympia', 'wa');
+
+INSERT INTO employee (employee_id, first_name, last_name, hire_date, job_title, shop_id)
+VALUES (114, 'brian', 'james', '2019-03-23', 'barista', 1),
+	   (115, 'jill', 'smith', '2021-10-19', 'sales representative', 2),
+       (112, 'michelle', 'baker', '2018-05-18', 'barista', 3),
+       (113, 'john', 'stein', '2019-08-30', 'barista', 4),
+       (111, 'stacey', 'gaston', '2017-12-13', 'shop manager', 3),
+       (116, 'jason', 'billings', '2022-02-15', 'accountant', 2);
+       
+INSERT INTO supplier (supplier_id, company_name, country, sales_contact_name, email)
+VALUES (6795, 'star coffee', 'columbia', 'camila andres', 'candres@gmail.com'),
+	   (8451, 'rainier coffee', 'usa', 'michael hall', 'michhall@rainiercoffee.org'),
+       (9746, 'frenchie coffee', 'france', 'john pierre', 'ouicafepourmoi@gmail.com'),
+       (10456, 'rainier coffee', 'usa', 'shannon blake', 'shablake@rainiercoffee.org'),
+       (12437, 'ny coffee company', 'usa', 'melisa parker', 'ilovecoffee23@gmail.com');
+       
+ INSERT INTO coffee (coffee_id, shop_id, supplier_id, coffee_name, price_per_pound)
+ VALUES (20, 1, 6795, 'bright and early', '5.50'),
+        (21, 2, 8451, 'mountain top', '4.30'),
+        (22, 3, 9746, 'pick me up', '3.89'),
+        (23, 2, 8451, 'bring alive', '4.05'),
+        (24, 4, 12437, 'no sleep till brooklyn', '5.35');
+        
+SELECT supplier_id
+FROM supplier
+WHERE supplier_id > 10000;
+
+
+ SELECT coffee_shop.shop_name, supplier.company_name, coffee.coffee_name
+FROM coffee
+JOIN coffee_shop ON coffee_shop.shop_id = coffee.shop_id
+JOIN supplier ON supplier.supplier_id = coffee.supplier_id;
+
+
